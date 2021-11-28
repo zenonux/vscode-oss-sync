@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.0] (2021-11-28)
+
+**Fix：**
+
+- change webpack config
+
 ## [0.1.0] (2021-11-28)
 
 **New Features：**
