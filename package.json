@@ -1,6 +1,6 @@
 {
   "name": "vscode-oss-sync",
-  "displayName": "vscode-oss-sync",
+  "displayName": "OssSync",
   "description": "oss sync entension for vscode.",
   "version": "0.1.0",
   "engines": {
@@ -19,7 +19,7 @@
       "commandPalette": [
         {
           "command": "vscode-oss-sync.syncLocalToRemote",
-          "when": "false"
+          "when": "False"
         }
       ],
       "explorer/context": [
