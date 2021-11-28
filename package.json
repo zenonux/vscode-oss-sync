@@ -16,6 +16,12 @@
   "main": "./out/extension.js",
   "contributes": {
     "menus": {
+      "commandPalette": [
+        {
+          "command": "vscode-oss-sync.syncLocalToRemote",
+          "when": "false"
+        }
+      ],
       "explorer/context": [
         {
           "command": "vscode-oss-sync.syncLocalToRemote",
