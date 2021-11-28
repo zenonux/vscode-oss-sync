@@ -1,6 +1,7 @@
 {
   "name": "vscode-oss-sync",
   "displayName": "OssSync",
+  "publisher": "zenonux",
   "description": "oss sync entension for vscode.",
   "version": "0.1.0",
   "engines": {
@@ -9,24 +10,29 @@
   "categories": [
     "Other"
   ],
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#404040",
+    "theme": "dark"
+  },
   "activationEvents": [
     "workspaceContains:.vscode/oss-sync.json",
     "onCommand:vscode-oss-sync.initConfig"
   ],
-  "main": "./out/extension.js",
+  "main": "./dist/extension.js",
   "contributes": {
     "menus": {
-      "commandPalette": [
-        {
-          "command": "vscode-oss-sync.syncLocalToRemote",
-          "when": "False"
-        }
-      ],
       "explorer/context": [
         {
           "command": "vscode-oss-sync.syncLocalToRemote",
           "when": "ossSync.enabled && resourcePath =~ /ossSyncAssets/",
           "group": "1_modification"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "vscode-oss-sync.syncLocalToRemote",
+          "when": "False"
         }
       ]
     },
@@ -42,10 +48,13 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p -w . --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "lint": "eslint src --ext ts"
   },
   "bugs": {
