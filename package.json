@@ -3,7 +3,7 @@
   "displayName": "OssSync",
   "publisher": "zenonux",
   "description": "oss sync entension for vscode.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "engines": {
     "vscode": "^1.62.0"
   },

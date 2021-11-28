@@ -28,6 +28,7 @@ const extensionConfig = {
     extensions: ['.js','.ts',]
   },
   module: {
+    unknownContextCritical:false,
     rules: [
       {
         test: /\.ts$/,
