@@ -4,7 +4,7 @@ import Oss from '../services/oss';
 
 export const initConfig = (context: vscode.ExtensionContext) => {
   let command: vscode.Disposable = vscode.commands.registerCommand(
-    'vscode-oss-sync.initConfig',
+    'vscode-oss-sync.config',
     async () => {
       await Oss.initConfig();
     }

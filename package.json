@@ -17,7 +17,7 @@
   },
   "activationEvents": [
     "workspaceContains:.vscode/oss-sync.json",
-    "onCommand:vscode-oss-sync.initConfig"
+    "onCommand:vscode-oss-sync.config"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -38,7 +38,7 @@
     },
     "commands": [
       {
-        "command": "vscode-oss-sync.initConfig",
+        "command": "vscode-oss-sync.config",
         "title": "OssSync:Config"
       },
       {
