@@ -1,8 +1,14 @@
 # Changelog
 
+## [0.2.1] (2021-11-30)
+
+- fix path sep issue in win.
+
+**Fix Bugs：**
+
 ## [0.2.0] (2021-11-28)
 
-**Fix：**
+**Fix Bugs：**
 
 - change webpack config
 
