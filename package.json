@@ -2,7 +2,7 @@
   "name": "vscode-oss-sync",
   "displayName": "OssSync",
   "publisher": "zenonux",
-  "description": "oss sync entension for vscode.",
+  "description": "oss(ali-oss) sync extension for vscode.",
   "version": "0.2.1",
   "engines": {
     "vscode": "^1.62.0"
