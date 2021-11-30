@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import Oss from '../services/oss';
 
-const ossClient=Oss.getInstance();
 
 export const initConfig = (context: vscode.ExtensionContext) => {
   let command: vscode.Disposable = vscode.commands.registerCommand(
@@ -14,6 +13,7 @@ export const initConfig = (context: vscode.ExtensionContext) => {
 };
 
 export const syncLocalToRemote = (context: vscode.ExtensionContext) => {
+  const ossClient=Oss.getInstance();
   let command: vscode.Disposable = vscode.commands.registerCommand(
     'vscode-oss-sync.syncLocalToRemote',
     async (folder:vscode.Uri) => {
