@@ -11,12 +11,10 @@ import {
   showWarningMessage,
 } from '../utils/vscode';
 import { getFilesFromFolderSync } from '../utils/util';
-import {  difference } from "lodash";
-
+import { difference } from 'lodash';
 
 const CONFIG_PATH = '.vscode/oss-sync.json';
 const ASSETS_CONTEXT = 'ossSyncAssets';
-
 
 export default class Oss {
   private client: AliOss;
@@ -30,10 +28,15 @@ export default class Oss {
     });
   }
 
-  private static instance: Oss;
+  private static instance: Oss | null;
   static getInstance() {
-    if (!this.instance) {
-      this.instance = new Oss();
+    try {
+      if (!this.instance) {
+        this.instance = new Oss();
+      }
+    } catch (e) {
+      showErrorMessage('Please check your config in ./vscode/oss-sync.json.');
+      this.instance = null;
     }
     return this.instance;
   }
@@ -77,7 +80,7 @@ export default class Oss {
   }
 
   static getPrefixByPath(menuPath: string) {
-    let suffix = menuPath.split(ASSETS_CONTEXT)[1];
+    let suffix = menuPath.split(ASSETS_CONTEXT)[1].replace('\\','/');
     return suffix.charAt(0) === '/'
       ? suffix.substring(1, suffix.length)
       : suffix;
@@ -90,31 +93,38 @@ export default class Oss {
     return targetPrefix;
   }
 
-   diffFiles(localFiles:string[],remoteFiles:string[]){
-    return difference(localFiles.map(file => Oss.getPrefixByPath(file)),remoteFiles);
+  diffFiles(localFiles: string[], remoteFiles: string[]) {
+    return difference(
+      localFiles.map((file) => Oss.getPrefixByPath(file)),
+      remoteFiles
+    );
   }
 
   async syncFolder(folderPath: string) {
     let prefix = Oss.getPrefixByPath(folderPath);
-    let localFiles =  getFilesFromFolderSync(folderPath);
+    let localFiles = getFilesFromFolderSync(folderPath);
     let remoteFiles = await this.listPrefix(prefix);
     let needUploadFiles = this.diffFiles(localFiles, remoteFiles);
-    if(needUploadFiles.length<=0){
+    if (needUploadFiles.length <= 0) {
       showWarningMessage('No files need to upload.');
       return;
     }
-    const statusBarItem=createStatusBarItem();
+    const statusBarItem = createStatusBarItem();
     statusBarItem.show();
     let notUploadCount = needUploadFiles.length;
-    let assetsContext=path.resolve(getRootPath(),ASSETS_CONTEXT);
+    let assetsContext = path.resolve(getRootPath(), ASSETS_CONTEXT);
     for await (let prefix of needUploadFiles) {
-      let filePath=path.resolve(assetsContext,prefix);
+      let filePath = path.resolve(assetsContext, prefix);
       statusBarItem.text = `upload ${filePath}, ${
         notUploadCount - 1 >= 0
           ? notUploadCount - 1 + ' files waiting for upload.'
           : ''
       }`;
-      await this.client.put(prefix, filePath);
+      try {
+        await this.client.put(prefix, filePath);
+      } catch (e) {
+        console.error(e);
+      }
       notUploadCount--;
     }
     statusBarItem.hide();

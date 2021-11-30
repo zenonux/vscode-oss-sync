@@ -13,11 +13,13 @@ export const initConfig = (context: vscode.ExtensionContext) => {
 };
 
 export const syncLocalToRemote = (context: vscode.ExtensionContext) => {
-  const ossClient=Oss.getInstance();
   let command: vscode.Disposable = vscode.commands.registerCommand(
     'vscode-oss-sync.syncLocalToRemote',
     async (folder:vscode.Uri) => {
-      await ossClient.syncLocalToRemote(folder.fsPath);
+      const ossClient=Oss.getInstance();
+      if(ossClient){
+        await ossClient.syncLocalToRemote(folder.fsPath);
+      }
     }
   );
   context.subscriptions.push(command);
