@@ -80,15 +80,16 @@ export default class Oss {
   }
 
   static getPrefixByPath(menuPath: string) {
-    let suffix = menuPath.split(ASSETS_CONTEXT)[1].replace('\\','/');
+    let suffix = menuPath.split(ASSETS_CONTEXT)[1].replace(/\\/g,'/');
     return suffix.charAt(0) === '/'
       ? suffix.substring(1, suffix.length)
       : suffix;
   }
   static async getTargetPrefixByPath(filePath: string) {
     let prefix = Oss.getPrefixByPath(filePath);
-    let targetPrefix = (await Oss.getConfig().prefix)
-      ? Oss.getConfig().prefix + '/' + prefix
+    let ossPrefix= await Oss.getConfig().prefix;
+    let targetPrefix = ossPrefix
+      ? ossPrefix + '/' + prefix
       : prefix;
     return targetPrefix;
   }
@@ -128,7 +129,7 @@ export default class Oss {
       notUploadCount--;
     }
     statusBarItem.hide();
-    showInformationMessage(`sync ${prefix} succeed.`);
+    showInformationMessage(`sync ${prefix} succeed,${notUploadCount} files has been uploaded.`);
   }
 
   async syncFile(filePath: string) {
