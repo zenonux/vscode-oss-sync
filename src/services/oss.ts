@@ -1,6 +1,6 @@
 import * as fse from 'fs-extra';
 import * as path from 'path';
-import * as AliOss from 'ali-oss';
+import  OssBucketManager from './ossBucketManager';
 
 import {
   createStatusBarItem,
@@ -17,10 +17,11 @@ const CONFIG_PATH = '.vscode/oss-sync.json';
 const ASSETS_CONTEXT = 'ossSyncAssets';
 
 export default class Oss {
-  private client: AliOss;
+  private client:OssBucketManager;
   constructor() {
     let config = Oss.getConfig();
-    this.client = new AliOss({
+    this.client = new OssBucketManager({
+      type:config.type,
       region: config.region,
       accessKeyId: config.accessKeyId,
       accessKeySecret: config.accessKeySecret,
@@ -56,6 +57,7 @@ export default class Oss {
       configPath,
       {
         name: 'oss label',
+        type:'ali-oss',
         region: 'oss-cn-shanghai',
         accessKeyId: '',
         accessKeySecret: '',
@@ -144,20 +146,12 @@ export default class Oss {
 
   // list oss directory
   async listPrefix(prefix: string): Promise<string[]> {
-    let files: string[] = [];
-    let res = await this.client.list(
+    let files = await this.client.listPrefix(
       {
         prefix: prefix + '/',
-        delimiter: '/', //only search current dir, not including subdir
-        'max-keys': 100, // default 100，max 1000
+        delimiter: '/',
       },
-      {}
     );
-    if (res.objects) {
-      res.objects.forEach((item: any) => {
-        files.push(item.name);
-      });
-    }
     return files;
   }
 }
