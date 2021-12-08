@@ -57,8 +57,7 @@ export default class Oss {
       configPath,
       {
         name: 'oss label',
-        type:'ali-oss',
-        region: 'oss-cn-shanghai',
+        type:'ali',   
         accessKeyId: '',
         accessKeySecret: '',
         bucket: '',
