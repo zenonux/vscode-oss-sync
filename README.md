@@ -6,7 +6,7 @@ Sync files between Local and Oss. Support ali oss and qiniu oss.
 
 1. init oss config
 
-   command+shift+p OssSync:config
+   `command+shift+p` OssSync:config
 
 2. create `ossSyncAssets` directory at the root of project
 
@@ -15,3 +15,17 @@ Sync files between Local and Oss. Support ali oss and qiniu oss.
 3. use the entry in the context menu to upload file or folder
 
    right-click `ossSyncAssets`,run OssSync: uploadFolder
+
+## Config
+
+```json
+{
+  "name": "oss label", //required.
+  "type": "ali", //required. value: ali | qiniu
+  "region": "oss-cn-shanghai", //required only in ali oss.
+  "accessKeyId": "", //required.
+  "accessKeySecret": "", //required.
+  "bucket": "", //required.
+  "prefix": "" //optional.
+}
+```

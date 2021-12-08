@@ -56,13 +56,13 @@ export default class Oss {
     await fse.outputJson(
       configPath,
       {
-        name: 'oss label',  //required.
-        type:'ali',    //required. value: ali || qiniu
-        region: "oss-cn-shanghai",  // required only in ali oss.
-        accessKeyId: '', //required.
-        accessKeySecret: '', //required.
-        bucket: '',  //required.
-        prefix: '',  //optional.
+        name: 'oss label',  
+        type:'ali',   
+        region: "oss-cn-shanghai",  
+        accessKeyId: '', 
+        accessKeySecret: '', 
+        bucket: '', 
+        prefix: '',
       },
       { spaces: 4 }
     );
