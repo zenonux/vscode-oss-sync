@@ -1,6 +1,6 @@
 import * as fse from 'fs-extra';
 import * as path from 'path';
-import  OssBucketManager from './ossBucketManager';
+import  BucketManagerFactory from './bucketManager';
 
 import {
   createStatusBarItem,
@@ -17,10 +17,10 @@ const CONFIG_PATH = '.vscode/oss-sync.json';
 const ASSETS_CONTEXT = 'ossSyncAssets';
 
 export default class Oss {
-  private client:OssBucketManager;
+  private client;
   constructor() {
     let config = Oss.getConfig();
-    this.client = new OssBucketManager({
+    this.client = BucketManagerFactory.create({
       type:config.type,
       region: config.region,
       accessKeyId: config.accessKeyId,
