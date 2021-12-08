@@ -24,12 +24,12 @@
     "menus": {
       "explorer/context": [
         {
-          "command": "vscode-oss-sync.syncLocalToRemote",
+          "command": "vscode-oss-sync.uploadFile",
           "when": "ossSync.enabled && !explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
           "group": "1_modification"
         },
         {
-          "command": "vscode-oss-sync.syncLocalToRemote",
+          "command": "vscode-oss-sync.uploadFolder",
           "when": "ossSync.enabled && explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
           "group": "1_modification"
         }

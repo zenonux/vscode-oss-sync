@@ -14,7 +14,7 @@ export const initConfig = (context: vscode.ExtensionContext) => {
 
 export const uploadFile = (context: vscode.ExtensionContext) => {
   let command: vscode.Disposable = vscode.commands.registerCommand(
-    'vscode-oss-sync.syncLocalToRemote',
+    'vscode-oss-sync.uploadFile',
     async (folder:vscode.Uri) => {
       const ossClient=Oss.getInstance();
       if(ossClient){
@@ -28,7 +28,7 @@ export const uploadFile = (context: vscode.ExtensionContext) => {
 
 export const uploadFolder = (context: vscode.ExtensionContext) => {
   let command: vscode.Disposable = vscode.commands.registerCommand(
-    'vscode-oss-sync.syncLocalToRemote',
+    'vscode-oss-sync.uploadFolder',
     async (folder:vscode.Uri) => {
       const ossClient=Oss.getInstance();
       if(ossClient){
