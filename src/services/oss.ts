@@ -106,7 +106,7 @@ export default class Oss {
   async syncFolder(folderPath: string) {
     let prefix = Oss.getPrefixByPath(folderPath);
     let localFiles = getFilesFromFolderSync(folderPath);
-    let remoteFiles = await this.listPrefix(prefix);
+    let remoteFiles = await this.client.listPrefix(prefix);
     let needUploadFiles = this.diffFiles(localFiles, remoteFiles);
     if (needUploadFiles.length <= 0) {
       showWarningMessage('No files need to upload.');
@@ -144,14 +144,4 @@ export default class Oss {
     }
   }
 
-  // list oss directory
-  async listPrefix(prefix: string): Promise<string[]> {
-    let files = await this.client.listPrefix(
-      {
-        prefix: prefix + '/',
-        delimiter: '/',
-      },
-    );
-    return files;
-  }
 }

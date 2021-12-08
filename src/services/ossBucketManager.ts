@@ -1,8 +1,7 @@
 import * as AliOss from 'ali-oss';
 import * as qiniu from 'qiniu';
-import { promisify } from 'util';
 
-type OssType = 'ali-oss' | 'qiniu';
+type OssType = 'ali' | 'qiniu';
 
 interface OssConfig {
   type: OssType
@@ -19,7 +18,7 @@ export default class OssBucketManager {
   private type: OssType;
   constructor(private config: OssConfig) {
     this.type = config.type;
-    if (this.type === 'ali-oss') {
+    if (this.type === 'ali') {
       this.aliClient = new AliOss(config);
     } else {
       let mac = new qiniu.auth.digest.Mac(
@@ -37,54 +36,57 @@ export default class OssBucketManager {
     }
   }
   async put(name: string, file: any) {
-    if (this.type === 'ali-oss' && this.aliClient) {
-      let res = await this.aliClient.put(name, file);
-    } else{
-      return new Promise((resolve,reject)=>{
-        this.qiniuFormUploader && this.qiniuFormUploader.putFile(
-          this.qiniuUploadToken,
-          name,
-          file,
-          new qiniu.form_up.PutExtra(),
-          function(e?: Error, respBody?: any, respInfo?: any){
-            if(e){
-              reject(e);
-            }else{
-              resolve(respInfo.data);
+    if (this.type === 'ali' && this.aliClient) {
+      return this.aliClient.put(name, file);
+    } else {
+      return new Promise((resolve, reject) => {
+        this.qiniuFormUploader &&
+          this.qiniuFormUploader.putFile(
+            this.qiniuUploadToken,
+            name,
+            file,
+            new qiniu.form_up.PutExtra(),
+            function (e?: Error, respBody?: any, respInfo?: any) {
+              if (e) {
+                reject(e);
+              } else {
+                resolve(respInfo.data);
+              }
             }
-          }
-        );
+          );
       });
     }
   }
-  async listPrefix(opts: { prefix: string; delimiter: string }):Promise<string[]> {
-    if (this.type === 'ali-oss' && this.aliClient) {
+  async listPrefix(prefix: string): Promise<string[]> {
+    if (this.type === 'ali' && this.aliClient) {
       let res = await this.aliClient.list(
         {
-          prefix: opts.prefix,
-          delimiter: opts.delimiter,
+          prefix: prefix,
+          delimiter: '/',
           'max-keys': 100, // default 100，max 1000
         },
         {}
       );
-    } else if (this.type === 'qiniu' && this.qiniuBucketManager) {
+      return res.objects.map((item) => item.name);
+    } else {
       return new Promise((resolve, reject) => {
-        this.qiniuBucketManager && this.qiniuBucketManager.listPrefix(
-          this.config.bucket,
-          {
-            prefix: opts.prefix === '/' ? '' : opts.prefix,
-            delimiter: opts.delimiter,
-            limit: 100,
-          },
-          function (e?: Error, respBody?: any, respInfo?: any) {
-            if(e){
-              reject(e);
-            }else{
-              let nameList=respInfo.data.items.map((val:any) => val.key);
-              resolve(nameList);
+        this.qiniuBucketManager &&
+          this.qiniuBucketManager.listPrefix(
+            this.config.bucket,
+            {
+              prefix: prefix === '/' ? '' : prefix,
+              delimiter: '/',
+              limit: 100,
+            },
+            function (e?: Error, respBody?: any, respInfo?: any) {
+              if (e) {
+                reject(e);
+              } else {
+                let nameList = respInfo.data.items.map((val: any) => val.key);
+                resolve(nameList);
+              }
             }
-          }
-        );
+          );
       });
     }
   }
