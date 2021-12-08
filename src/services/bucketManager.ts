@@ -50,6 +50,7 @@ class AliBucketManager implements BucketManager {
 class QiniuBucketManager implements BucketManager {
   private uploadToken: string = '';
   private formUploader?: qiniu.form_up.FormUploader;
+  private putExtra: qiniu.form_up.PutExtra | null=null;
   private bucketManager?: qiniu.rs.BucketManager;
 
   constructor(private config: OssConfig) {
@@ -62,6 +63,7 @@ class QiniuBucketManager implements BucketManager {
       scope: config.bucket,
       expires: 7200,
     });
+    this.putExtra= new qiniu.form_up.PutExtra();
     this.formUploader = new qiniu.form_up.FormUploader({});
     this.uploadToken = putPolicy.uploadToken(mac);
     this.bucketManager = new qiniu.rs.BucketManager(mac, qiniuConfig);
@@ -73,7 +75,7 @@ class QiniuBucketManager implements BucketManager {
           this.uploadToken,
           name,
           filePath,
-          new qiniu.form_up.PutExtra(),
+          this.putExtra,
           function (e?: Error, respBody?: any, respInfo?: any) {
             if (e) {
               reject(e);
