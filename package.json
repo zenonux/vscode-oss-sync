@@ -25,13 +25,22 @@
       "explorer/context": [
         {
           "command": "vscode-oss-sync.syncLocalToRemote",
-          "when": "ossSync.enabled && resourcePath =~ /ossSyncAssets/",
+          "when": "ossSync.enabled && !explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
+          "group": "1_modification"
+        },
+        {
+          "command": "vscode-oss-sync.syncLocalToRemote",
+          "when": "ossSync.enabled && explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
           "group": "1_modification"
         }
       ],
       "commandPalette": [
         {
-          "command": "vscode-oss-sync.syncLocalToRemote",
+          "command": "vscode-oss-sync.uploadFile",
+          "when": "False"
+        },
+        {
+          "command": "vscode-oss-sync.uploadFolder",
           "when": "False"
         }
       ]
@@ -42,8 +51,12 @@
         "title": "OssSync:Config"
       },
       {
-        "command": "vscode-oss-sync.syncLocalToRemote",
-        "title": "OssSync: Sync Local -> Remote"
+        "command": "vscode-oss-sync.uploadFile",
+        "title": "OssSync:uploadFile(override)"
+      },
+      {
+        "command": "vscode-oss-sync.uploadFolder",
+        "title": "OssSync:uploadFolder"
       }
     ]
   },

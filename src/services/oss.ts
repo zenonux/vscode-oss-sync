@@ -68,17 +68,6 @@ export default class Oss {
     await showTextDocument(configPath);
   }
 
-  // sync local folder to oss
-  async syncLocalToRemote(menuPath: string) {
-    // async file
-    if (path.extname(menuPath)) {
-      await this.syncFile(menuPath);
-    }
-    //sync folder
-    else {
-      await this.syncFolder(menuPath);
-    }
-  }
 
   static getPrefixByPath(menuPath: string) {
     let suffix = menuPath.split(ASSETS_CONTEXT)[1].replace(/\\/g,'/');
@@ -102,7 +91,7 @@ export default class Oss {
     );
   }
 
-  async syncFolder(folderPath: string) {
+  async uploadFolder(folderPath: string) {
     let prefix = Oss.getPrefixByPath(folderPath);
     let localFiles = getFilesFromFolderSync(folderPath);
     let remoteFiles = await this.client.listPrefix(prefix);
@@ -133,7 +122,7 @@ export default class Oss {
     showInformationMessage(`sync ${prefix} succeed,${notUploadCount} files has been uploaded.`);
   }
 
-  async syncFile(filePath: string) {
+  async uploadFile(filePath: string) {
     let targetPrefix = await Oss.getTargetPrefixByPath(filePath);
     try {
       await this.client.put(targetPrefix, filePath);

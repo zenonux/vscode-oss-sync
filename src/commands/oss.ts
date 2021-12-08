@@ -12,13 +12,27 @@ export const initConfig = (context: vscode.ExtensionContext) => {
   context.subscriptions.push(command);
 };
 
-export const syncLocalToRemote = (context: vscode.ExtensionContext) => {
+export const uploadFile = (context: vscode.ExtensionContext) => {
   let command: vscode.Disposable = vscode.commands.registerCommand(
     'vscode-oss-sync.syncLocalToRemote',
     async (folder:vscode.Uri) => {
       const ossClient=Oss.getInstance();
       if(ossClient){
-        await ossClient.syncLocalToRemote(folder.fsPath);
+        await ossClient.uploadFile(folder.fsPath);
+      }
+    }
+  );
+  context.subscriptions.push(command);
+};
+
+
+export const uploadFolder = (context: vscode.ExtensionContext) => {
+  let command: vscode.Disposable = vscode.commands.registerCommand(
+    'vscode-oss-sync.syncLocalToRemote',
+    async (folder:vscode.Uri) => {
+      const ossClient=Oss.getInstance();
+      if(ossClient){
+        await ossClient.uploadFolder(folder.fsPath);
       }
     }
   );
