@@ -18,7 +18,7 @@ Sync files between Local and Oss. Support ali oss and qiniu oss.
 
 ## Config
 
-```json
+```js
 {
   "name": "oss label", //required.
   "type": "ali", //required. value: ali | qiniu
