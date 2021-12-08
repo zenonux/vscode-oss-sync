@@ -1,10 +1,10 @@
 # Oss Sync
 
-Sync files between Local and Ali Oss.
+Sync files between Local and Oss. Support ali oss and qiniu oss.
 
 ## Usage
 
-1. init ali oss config
+1. init oss config
 
    command+shift+p OssSync:config
 
@@ -12,6 +12,6 @@ Sync files between Local and Ali Oss.
 
    move files into `ossSyncAssets`
 
-3. use the entry in the context menu to sync
+3. use the entry in the context menu to upload file or folder
 
-   right-click `ossSyncAssets`,run OssSync: Local -> Remote
+   right-click `ossSyncAssets`,run OssSync: uploadFolder

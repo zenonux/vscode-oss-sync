@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.0] (2021-12-8)
+
+**New Features**
+
+- support qiniu-oss
+
 ## [0.2.2] (2021-12-1)
 
 **Fix Bugs：**

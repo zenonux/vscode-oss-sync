@@ -22,6 +22,7 @@ class AliBucketManager implements BucketManager {
     this.client = new AliOss({
       accessKeyId: config.accessKeyId,
       accessKeySecret: config.accessKeySecret,
+      region: config.region,
       bucket: config.bucket,
     });
   }
@@ -29,7 +30,8 @@ class AliBucketManager implements BucketManager {
     if (!this.client) {
       return;
     }
-    return this.client.put(name, filePath);
+    let res=await this.client.put(name, filePath);
+    return res;
   }
   async listPrefix(prefix: string): Promise<string[]> {
     if (!this.client) {

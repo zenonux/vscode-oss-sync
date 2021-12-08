@@ -2,8 +2,8 @@
   "name": "vscode-oss-sync",
   "displayName": "OssSync",
   "publisher": "zenonux",
-  "description": "oss(ali-oss) sync extension for vscode.",
-  "version": "0.2.2",
+  "description": "oss sync extension for vscode(ali-oss/qiniu-oss).",
+  "version": "0.3.0",
   "engines": {
     "vscode": "^1.62.0"
   },
@@ -52,11 +52,11 @@
       },
       {
         "command": "vscode-oss-sync.uploadFile",
-        "title": "OssSync:uploadFile(override)"
+        "title": "OssSync: uploadFile(override)"
       },
       {
         "command": "vscode-oss-sync.uploadFolder",
-        "title": "OssSync:uploadFolder"
+        "title": "OssSync: uploadFolder"
       }
     ]
   },
