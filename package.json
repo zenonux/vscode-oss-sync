@@ -3,7 +3,7 @@
   "displayName": "OssSync",
   "publisher": "zenonux",
   "description": "oss sync extension for vscode(ali-oss/qiniu-oss).",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "engines": {
     "vscode": "^1.62.0"
   },

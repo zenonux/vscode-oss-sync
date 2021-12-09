@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.1] (2021-12-9)
+
+**New Features**
+
+- add json schema support.
+
 ## [0.3.0] (2021-12-8)
 
 **New Features**
