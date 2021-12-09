@@ -8,7 +8,7 @@ Sync files between Local and Oss. Support ali oss and qiniu oss.
 
    `command/ctrl+shift+p` OssSync:config
 
-2. create `ossSyncAssets` directory at the root of project
+2. create `ossSyncAssets` directory in your project.
 
    move files into `ossSyncAssets`
 
