@@ -9,6 +9,7 @@ type OssConfig = {
   accessKeySecret: string
   bucket: string
   region?: string
+  prefix?:string
 };
 
 interface BucketManager {
