@@ -56,7 +56,7 @@ export default class Oss {
     await fse.outputJson(
       configPath,
       {
-        name: 'oss label',  
+        label: 'oss label',  
         type:'ali',   
         region: "oss-cn-shanghai",  
         accessKeyId: '', 

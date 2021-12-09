@@ -58,6 +58,12 @@
         "command": "vscode-oss-sync.uploadFolder",
         "title": "OssSync: uploadFolder"
       }
+    ],
+    "jsonValidation": [
+      {
+        "fileMatch": ".vscode/oss-sync.json",
+        "url": "./schema/config.schema.json"
+      }
     ]
   },
   "scripts": {

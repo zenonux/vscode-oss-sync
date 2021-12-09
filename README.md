@@ -20,7 +20,7 @@ Sync files between Local and Oss. Support ali oss and qiniu oss.
 
 ```js
 {
-  "name": "oss label", //required.
+  "label": "oss label", //required.
   "type": "ali", //required. value: ali | qiniu
   "region": "oss-cn-shanghai", //required only in ali oss.
   "accessKeyId": "", //required.
