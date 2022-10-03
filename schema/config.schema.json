@@ -1,0 +1,48 @@
+{
+  "title": "JSON schema for Oss Sync",
+  "type": "object",
+  "required": ["label", "type", "accessKeyId", "accessKeySecret", "bucket"],
+  "if": {
+    "properties": {
+      "type": {
+        "enum": ["tencent"]
+      }
+    }
+  },
+  "then": {
+    "required": ["region"]
+  },
+  "properties": {
+    "label": {
+      "type": "string",
+      "description": "oss label"
+    },
+    "type": {
+      "type": "string",
+      "default": "tencent",
+      "enum": ["tencent"],
+      "description": "oss platform"
+    },
+    "region": {
+      "type": "string",
+      "default": "assets-sh-1234",
+      "description": "oss region"
+    },
+    "accessKeyId": {
+      "type": "string",
+      "description": "oss accessKeyId"
+    },
+    "accessKeySecret": {
+      "type": "string",
+      "description": "oss accessKeySecret"
+    },
+    "bucket": {
+      "type": "string",
+      "description": "oss bucket"
+    },
+    "prefix": {
+      "type": "string",
+      "description": "oss bucket prefix"
+    }
+  }
+}
