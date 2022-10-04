@@ -1,7 +1,7 @@
 import * as path from "path";
 import * as fs from "fs";
 
-export function getFilesFromFolderSync(dirPath: string) {
+export function listDirectoryFiles(dirPath: string) {
   let fileList: string[] = [];
   fs.readdirSync(dirPath).forEach((file) => {
     const fullFilePath = path.join(dirPath, file);

@@ -8,9 +8,8 @@ import {
   showInformationMessage,
   showTextDocument,
   showAlert,
-  showWarningMessage,
 } from '../utils/vscode';
-import { getFilesFromFolderSync } from '../utils/util';
+import { listDirectoryFiles } from '../utils/util';
 import { differenceBy } from 'lodash';
 
 const configPath = path.join(getRootPath(), '.vscode/oss-sync.json');
@@ -120,8 +119,8 @@ export default class OssSync {
 
   async syncFolder(folderPath: string) {
     let prefix = OssSync.getTargetPrefixByFilePath(folderPath);
-    let localFiles = getFilesFromFolderSync(folderPath);
-    let remoteFiles = await this._client.listPrefix(prefix);
+    let localFiles = listDirectoryFiles(folderPath);
+    let remoteFiles = await this._client.listDirectory(prefix);
     let [needUploadFiles, needRemoveFiles] = this._diffFiles(
       localFiles,
       remoteFiles
@@ -143,7 +142,7 @@ export default class OssSync {
           ? notUploadCount - 1 + ' files waiting to be uploaded.'
           : ''
       }`;
-      await this._client.put(fileItem.prefix, fileItem.fullPath);
+      await this._client.uploadFile(fileItem.prefix, fileItem.fullPath);
       notUploadCount--;
     }
     for await (let fileItem of needRemoveFiles) {
@@ -169,7 +168,7 @@ export default class OssSync {
       return;
     }
     try {
-      await this._client.put(targetPrefix, filePath);
+      await this._client.uploadFile(targetPrefix, filePath);
       showInformationMessage(`upload ${filePath} succeed.`);
     } catch (e) {
       showAlert(`upload ${filePath} failed.`);

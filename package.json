@@ -16,8 +16,7 @@
     "theme": "dark"
   },
   "activationEvents": [
-    "workspaceContains:.vscode/oss-sync.json",
-    "onCommand:vscode-oss-sync.config"
+    "workspaceContains:.vscode/oss-sync.json"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -25,12 +24,12 @@
       "explorer/context": [
         {
           "command": "vscode-oss-sync.uploadFile",
-          "when": "ossSync.enabled && !explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
+          "when": "!explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
           "group": "1_modification"
         },
         {
           "command": "vscode-oss-sync.syncFolder",
-          "when": "ossSync.enabled && explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
+          "when": "explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
           "group": "1_modification"
         }
       ],
@@ -48,7 +47,7 @@
     "commands": [
       {
         "command": "vscode-oss-sync.config",
-        "title": "OssSync:Config"
+        "title": "OssSync: Config"
       },
       {
         "command": "vscode-oss-sync.uploadFile",

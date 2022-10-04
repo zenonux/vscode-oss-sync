@@ -12,9 +12,9 @@ type OssConfig = {
 };
 
 interface BucketManager {
-  put(name: string, filePath: string): Promise<any>
+  uploadFile(targetPrefix: string, filePath: string): Promise<any>
   checkFileExist(prefix: string): Promise<boolean>
-  listPrefix(prefix: string): Promise<string[]>
+  listDirectory(prefix: string): Promise<string[]>
 }
 
 class TencentBucketManager implements BucketManager {
@@ -27,7 +27,7 @@ class TencentBucketManager implements BucketManager {
       SecretKey: _config.accessKeySecret,
     });
   }
-  async put(name: string, filePath: string) {
+  async uploadFile(targetPrefix: string, filePath: string) {
     if (!this._client) {
       return;
     }
@@ -37,7 +37,7 @@ class TencentBucketManager implements BucketManager {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Region: this._config.region || '',
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      Key: name,
+      Key: targetPrefix,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Body: createReadStream(filePath),
     });
@@ -69,7 +69,7 @@ class TencentBucketManager implements BucketManager {
     });
   }
 
-  async listPrefix(prefix: string): Promise<string[]> {
+  async listDirectory(prefix: string): Promise<string[]> {
     if (!this._client) {
       return [];
     }
