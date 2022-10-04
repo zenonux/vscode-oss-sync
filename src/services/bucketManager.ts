@@ -74,9 +74,9 @@ class TencentBucketManager implements BucketManager {
       return [];
     }
     prefix =
-    prefix.charAt(prefix.length - 1) !== '/'
-      ? prefix + '/'
-      : prefix;
+      prefix.charAt(prefix.length - 1) !== '/'
+        ? prefix + '/'
+        : prefix;
     let res = await this._client.getBucket({
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Bucket: this._config.bucket /* 填入您自己的存储桶，必须字段 */,
@@ -89,6 +89,26 @@ class TencentBucketManager implements BucketManager {
     });
     return res.Contents.map((item) => item.Key);
   }
+
+  deleteFile(prefix: string) {
+    return new Promise((resolve) => {
+      this._client?.deleteObject({
+       // eslint-disable-next-line @typescript-eslint/naming-convention
+       Bucket: this._config.bucket /* 填入您自己的存储桶，必须字段 */,
+       // eslint-disable-next-line @typescript-eslint/naming-convention
+       Region: this._config.region || '',
+       // eslint-disable-next-line @typescript-eslint/naming-convention
+       Key: prefix,
+      }, function (err) {
+        if(err){
+          resolve(false);
+        }else{
+          resolve(true);
+        }
+      });
+    });
+  }
+
 }
 
 export default class BucketManagerFactory {

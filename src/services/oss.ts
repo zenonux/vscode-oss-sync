@@ -7,6 +7,7 @@ import {
   showErrorMessage,
   showInformationMessage,
   showTextDocument,
+  showAlert,
   showWarningMessage,
 } from '../utils/vscode';
 import { getFilesFromFolderSync } from '../utils/util';
@@ -14,6 +15,8 @@ import { differenceBy } from 'lodash';
 
 const configPath = path.join(getRootPath(), '.vscode/oss-sync.json');
 const ASSETS_CONTEXT = 'ossSyncAssets';
+type RemoteFileItem = { prefix: string };
+type LocalFileItem = { prefix: string; fullPath: string };
 
 export default class OssSync {
   private _client;
@@ -78,8 +81,11 @@ export default class OssSync {
     return targetPrefix;
   }
 
-  diffFiles(localFiles: string[], remoteFiles: string[]) {
-    return differenceBy(
+  _diffFiles(
+    localFiles: string[],
+    remoteFiles: string[]
+  ): [LocalFileItem[], RemoteFileItem[]] {
+    let needUploadFiles = differenceBy(
       localFiles.map((file) => {
         return {
           prefix: OssSync.getTargetPrefixByFilePath(file),
@@ -93,32 +99,65 @@ export default class OssSync {
       }),
       'prefix'
     );
+
+    let needRemoveFiles = differenceBy(
+      remoteFiles.map((v) => {
+        return {
+          prefix: v,
+        };
+      }),
+      localFiles.map((file) => {
+        return {
+          prefix: OssSync.getTargetPrefixByFilePath(file),
+          fullPath: file,
+        };
+      }),
+      'prefix'
+    );
+
+    return [needUploadFiles, needRemoveFiles];
   }
 
-  async uploadFolder(folderPath: string) {
+  async syncFolder(folderPath: string) {
     let prefix = OssSync.getTargetPrefixByFilePath(folderPath);
     let localFiles = getFilesFromFolderSync(folderPath);
     let remoteFiles = await this._client.listPrefix(prefix);
-    let needUploadFiles = this.diffFiles(localFiles, remoteFiles);
+    let [needUploadFiles, needRemoveFiles] = this._diffFiles(
+      localFiles,
+      remoteFiles
+    );
     if (needUploadFiles.length <= 0) {
-      showWarningMessage('No files need to upload.');
+      showAlert('No files need to upload.');
       return;
     }
+    await showAlert(
+      `${needUploadFiles.length} files need to be uploaded, ${needRemoveFiles.length} files need to be removed.`
+    );
     const statusBarItem = createStatusBarItem();
     statusBarItem.show();
     let notUploadCount = needUploadFiles.length;
+    let notRemoveCount = needRemoveFiles.length;
     for await (let fileItem of needUploadFiles) {
       statusBarItem.text = `upload ${fileItem.fullPath}, ${
         notUploadCount - 1 >= 0
-          ? notUploadCount - 1 + ' files waiting for upload.'
+          ? notUploadCount - 1 + ' files waiting to be uploaded.'
           : ''
       }`;
       await this._client.put(fileItem.prefix, fileItem.fullPath);
       notUploadCount--;
     }
+    for await (let fileItem of needRemoveFiles) {
+      statusBarItem.text = `remove ${fileItem.prefix}, ${
+        notRemoveCount - 1 >= 0
+          ? notRemoveCount - 1 + ' files waiting to be removed.'
+          : ''
+      }`;
+      await this._client.deleteFile(fileItem.prefix);
+      notRemoveCount--;
+    }
     statusBarItem.hide();
-    showInformationMessage(
-      `sync ${prefix} succeed,${needUploadFiles.length} files has been uploaded.`
+    showAlert(
+      `sync ${prefix} succeed,${needUploadFiles.length} files has been uploaded, ${needRemoveFiles.length} files has been removed.`
     );
   }
 
@@ -126,14 +165,14 @@ export default class OssSync {
     let targetPrefix = OssSync.getTargetPrefixByFilePath(filePath);
     let isExist = await this._client.checkFileExist(targetPrefix);
     if (isExist) {
-      showErrorMessage(`${filePath} already exist.`);
+      showAlert(`${filePath} already exist.`);
       return;
     }
     try {
       await this._client.put(targetPrefix, filePath);
       showInformationMessage(`upload ${filePath} succeed.`);
     } catch (e) {
-      showErrorMessage(`upload ${filePath} failed.`);
+      showAlert(`upload ${filePath} failed.`);
     }
   }
 }

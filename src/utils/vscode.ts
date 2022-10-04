@@ -31,6 +31,10 @@ export function showInformationMessage(msg: string) {
   return vscode.window.showInformationMessage(msg);
 }
 
+export function showAlert(msg: string) {
+  return vscode.window.showInformationMessage(msg, { modal: true});
+}
+
 export function showErrorMessage(msg: string) {
   return vscode.window.showErrorMessage(msg);
 }
@@ -39,10 +43,9 @@ export function createStatusBarItem() {
   return vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
 }
 
-
-export const registerCommand = (command: string, callback: (...args: any[]) => any) => {
-  return vscode.commands.registerCommand(
-    command,
-    callback
-  );
+export const registerCommand = (
+  command: string,
+  callback: (...args: any[]) => any
+) => {
+  return vscode.commands.registerCommand(command, callback);
 };

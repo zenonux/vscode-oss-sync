@@ -3,7 +3,7 @@
   "displayName": "OssSync",
   "publisher": "zenonux",
   "description": "oss sync extension for vscode(tencent cos).",
-  "version": "0.3.6",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.70.0"
   },
@@ -29,7 +29,7 @@
           "group": "1_modification"
         },
         {
-          "command": "vscode-oss-sync.uploadFolder",
+          "command": "vscode-oss-sync.syncFolder",
           "when": "ossSync.enabled && explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
           "group": "1_modification"
         }
@@ -40,7 +40,7 @@
           "when": "False"
         },
         {
-          "command": "vscode-oss-sync.uploadFolder",
+          "command": "vscode-oss-sync.syncFolder",
           "when": "False"
         }
       ]
@@ -52,11 +52,11 @@
       },
       {
         "command": "vscode-oss-sync.uploadFile",
-        "title": "OssSync: uploadFile"
+        "title": "OssSync: Upload"
       },
       {
-        "command": "vscode-oss-sync.uploadFolder",
-        "title": "OssSync: uploadFolder"
+        "command": "vscode-oss-sync.syncFolder",
+        "title": "OssSync: Sync"
       }
     ],
     "jsonValidation": [

@@ -11,8 +11,8 @@ export const uploadFileCommand =async (folder:vscode.Uri) => {
 };
 
 
-export const uploadFolderCommand =async (folder:vscode.Uri) => {
+export const syncFolderCommand =async (folder:vscode.Uri) => {
   const ossInstance=OssSync.getInstance();
-  ossInstance && await ossInstance.uploadFolder(folder.fsPath);
+  ossInstance && await ossInstance.syncFolder(folder.fsPath);
 };
 
