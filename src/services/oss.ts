@@ -74,7 +74,8 @@ export default class OssSync {
   static getTargetPrefixByFilePath(filePath: string) {
     let filePathOfAssets = OssSync.getFilePathOfAssets(filePath);
     let ossPrefix = OssSync.getConfig().prefix;
-    let targetPrefix = ossPrefix + '/' + filePathOfAssets;
+    ossPrefix = ossPrefix.charAt(ossPrefix.length - 1) !== '/' ? ossPrefix + '/' : ossPrefix
+    let targetPrefix = ossPrefix + filePathOfAssets;
     return targetPrefix;
   }
 
