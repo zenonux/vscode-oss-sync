@@ -2,9 +2,9 @@ import * as path from "path";
 import * as fs from "fs";
 import { v1 } from 'uuid';
 
-const hashReg = /__\w{8}__/gi;
+const hashReg = /__\[\w{8}\]/gi;
 function generateHash() {
-  return '__' + v1().slice(0, 8) + '__';
+  return '__[' + v1().slice(0, 8) + ']';
 }
 
 export const renameFile = (filePath: string) => {
