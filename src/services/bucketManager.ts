@@ -8,7 +8,7 @@ type OssConfig = {
   accessKeySecret: string
   bucket: string
   region: string
-  prefix?: string
+  prefix: string
 };
 
 interface BucketManager {
@@ -93,16 +93,16 @@ class TencentBucketManager implements BucketManager {
   deleteFile(prefix: string) {
     return new Promise((resolve) => {
       this._client?.deleteObject({
-       // eslint-disable-next-line @typescript-eslint/naming-convention
-       Bucket: this._config.bucket /* 填入您自己的存储桶，必须字段 */,
-       // eslint-disable-next-line @typescript-eslint/naming-convention
-       Region: this._config.region || '',
-       // eslint-disable-next-line @typescript-eslint/naming-convention
-       Key: prefix,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        Bucket: this._config.bucket /* 填入您自己的存储桶，必须字段 */,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        Region: this._config.region || '',
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        Key: prefix,
       }, function (err) {
-        if(err){
+        if (err) {
           resolve(false);
-        }else{
+        } else {
           resolve(true);
         }
       });

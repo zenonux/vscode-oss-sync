@@ -74,9 +74,7 @@ export default class OssSync {
   static getTargetPrefixByFilePath(filePath: string) {
     let filePathOfAssets = OssSync.getFilePathOfAssets(filePath);
     let ossPrefix = OssSync.getConfig().prefix;
-    let targetPrefix = ossPrefix
-      ? ossPrefix + '/' + filePathOfAssets
-      : filePathOfAssets;
+    let targetPrefix = ossPrefix + '/' + filePathOfAssets;
     return targetPrefix;
   }
 
@@ -137,20 +135,18 @@ export default class OssSync {
     let notUploadCount = needUploadFiles.length;
     let notRemoveCount = needRemoveFiles.length;
     for await (let fileItem of needUploadFiles) {
-      statusBarItem.text = `upload ${fileItem.fullPath}, ${
-        notUploadCount - 1 >= 0
-          ? notUploadCount - 1 + ' files waiting to be uploaded.'
-          : ''
-      }`;
+      statusBarItem.text = `upload ${fileItem.fullPath}, ${notUploadCount - 1 >= 0
+        ? notUploadCount - 1 + ' files waiting to be uploaded.'
+        : ''
+        }`;
       await this._client.uploadFile(fileItem.prefix, fileItem.fullPath);
       notUploadCount--;
     }
     for await (let fileItem of needRemoveFiles) {
-      statusBarItem.text = `remove ${fileItem.prefix}, ${
-        notRemoveCount - 1 >= 0
-          ? notRemoveCount - 1 + ' files waiting to be removed.'
-          : ''
-      }`;
+      statusBarItem.text = `remove ${fileItem.prefix}, ${notRemoveCount - 1 >= 0
+        ? notRemoveCount - 1 + ' files waiting to be removed.'
+        : ''
+        }`;
       await this._client.deleteFile(fileItem.prefix);
       notRemoveCount--;
     }

@@ -26,6 +26,6 @@ Sync files between Local and Oss. Support tencent cos.
   "accessKeyId": "", //required.
   "accessKeySecret": "", //required.
   "bucket": "", //required.
-  "prefix": "" //optional.
+  "prefix": "" //required.
 }
 ```
