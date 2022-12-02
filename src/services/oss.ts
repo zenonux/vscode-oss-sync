@@ -1,4 +1,4 @@
-import { readJsonSync, pathExists, outputJson } from 'fs-extra';
+import { readJsonSync, rename, pathExists, outputJson } from 'fs-extra';
 import * as path from 'path';
 import BucketManagerFactory from './bucketManager';
 import {
@@ -9,7 +9,7 @@ import {
   showTextDocument,
   showAlert,
 } from '../utils/vscode';
-import { listDirectoryFiles } from '../utils/util';
+import { listDirectoryFiles, renameFile } from '../utils/util';
 import { differenceBy } from 'lodash';
 
 const configPath = path.join(getRootPath(), '.vscode/oss-sync.json');
@@ -170,5 +170,11 @@ export default class OssSync {
     } catch (e) {
       showAlert(`upload ${filePath} failed.`);
     }
+  }
+
+  async renameAndUploadFile(filePath: string) {
+    let targetFilePath = renameFile(filePath);
+    await rename(filePath, targetFilePath);
+    await this.uploadFile(targetFilePath);
   }
 }
