@@ -166,6 +166,42 @@ export default class OssSync {
     );
   }
 
+  async uploadFolder(folderPath: string) {
+    let prefix = OssSync.getTargetPrefixByFilePath(folderPath);
+    let localFiles = listDirectoryFiles(folderPath);
+    let remoteFiles = await this._client.listDirectory(prefix);
+    let [needUploadFiles] = this._diffFiles(
+      localFiles,
+      remoteFiles
+    );
+    if (needUploadFiles.length <= 0) {
+      showAlert("No files need to upload.");
+      return;
+    }
+    const isPass = await showDialog(
+      `${needUploadFiles.length} files need to be uploaded.`
+    );
+    if (!isPass) {
+      return;
+    }
+    const statusBarItem = createStatusBarItem();
+    statusBarItem.show();
+    let notUploadCount = needUploadFiles.length;
+    for await (let fileItem of needUploadFiles) {
+      statusBarItem.text = `upload ${fileItem.fullPath}, ${
+        notUploadCount - 1 >= 0
+          ? notUploadCount - 1 + " files waiting to be uploaded."
+          : ""
+      }`;
+      await this._client.uploadFile(fileItem.prefix, fileItem.fullPath);
+      notUploadCount--;
+    }
+    statusBarItem.hide();
+    showAlert(
+      `sync ${prefix} succeed,${needUploadFiles.length} files has been uploaded.`
+    );
+  }
+
   async uploadFile(filePath: string) {
     let targetPrefix = OssSync.getTargetPrefixByFilePath(filePath);
     let isExist = await this._client.checkFileExist(targetPrefix);

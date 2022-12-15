@@ -10,6 +10,11 @@ export const uploadFileCommand = async (folder: vscode.Uri) => {
   ossInstance && await ossInstance.uploadFile(folder.fsPath);
 };
 
+export const uploadFolderCommand = async (folder: vscode.Uri) => {
+  const ossInstance = OssSync.getInstance();
+  ossInstance && await ossInstance.uploadFolder(folder.fsPath);
+};
+
 export const renameAndUploadFileCommand = async (folder: vscode.Uri) => {
   const ossInstance = OssSync.getInstance();
   ossInstance && await ossInstance.renameAndUploadFile(folder.fsPath);
