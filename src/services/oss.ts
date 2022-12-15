@@ -1,6 +1,6 @@
-import { readJsonSync, rename, pathExists, outputJson } from 'fs-extra';
-import * as path from 'path';
-import BucketManagerFactory from './bucketManager';
+import { readJsonSync, rename, pathExists, outputJson } from "fs-extra";
+import * as path from "path";
+import BucketManagerFactory from "./bucketManager";
 import {
   createStatusBarItem,
   getRootPath,
@@ -8,12 +8,13 @@ import {
   showInformationMessage,
   showTextDocument,
   showAlert,
-} from '../utils/vscode';
-import { listDirectoryFiles, renameFile } from '../utils/util';
-import { differenceBy } from 'lodash';
+  showDialog,
+} from "../utils/vscode";
+import { listDirectoryFiles, renameFile } from "../utils/util";
+import { differenceBy } from "lodash";
 
-const configPath = path.join(getRootPath(), '.vscode/oss-sync.json');
-const ASSETS_CONTEXT = 'ossSyncAssets';
+const configPath = path.join(getRootPath(), ".vscode/oss-sync.json");
+const ASSETS_CONTEXT = "ossSyncAssets";
 type RemoteFileItem = { prefix: string };
 type LocalFileItem = { prefix: string; fullPath: string };
 
@@ -30,7 +31,7 @@ export default class OssSync {
         OssSync._instance = new OssSync();
       }
     } catch (e) {
-      showErrorMessage('Please check your config in ./vscode/oss-sync.json.');
+      showErrorMessage("Please check your config in ./vscode/oss-sync.json.");
       OssSync._instance = null;
     }
     return OssSync._instance;
@@ -49,13 +50,13 @@ export default class OssSync {
     await outputJson(
       configPath,
       {
-        label: 'oss label',
-        type: 'tencent',
-        region: 'assets-sh-1234',
-        accessKeyId: '',
-        accessKeySecret: '',
-        bucket: '',
-        prefix: '',
+        label: "oss label",
+        type: "tencent",
+        region: "assets-sh-1234",
+        accessKeyId: "",
+        accessKeySecret: "",
+        bucket: "",
+        prefix: "",
       },
       { spaces: 4 }
     );
@@ -63,9 +64,9 @@ export default class OssSync {
   }
 
   static getFilePathOfAssets(filePath: string) {
-    let formatFilePath = filePath.split(ASSETS_CONTEXT)[1].replace(/\\/g, '/');
+    let formatFilePath = filePath.split(ASSETS_CONTEXT)[1].replace(/\\/g, "/");
     formatFilePath =
-      formatFilePath.charAt(0) === '/'
+      formatFilePath.charAt(0) === "/"
         ? formatFilePath.substring(1, formatFilePath.length)
         : formatFilePath;
 
@@ -74,7 +75,10 @@ export default class OssSync {
   static getTargetPrefixByFilePath(filePath: string) {
     let filePathOfAssets = OssSync.getFilePathOfAssets(filePath);
     let ossPrefix = OssSync.getConfig().prefix;
-    ossPrefix = ossPrefix.charAt(ossPrefix.length - 1) !== '/' ? ossPrefix + '/' : ossPrefix
+    ossPrefix =
+      ossPrefix.charAt(ossPrefix.length - 1) !== "/"
+        ? ossPrefix + "/"
+        : ossPrefix;
     let targetPrefix = ossPrefix + filePathOfAssets;
     return targetPrefix;
   }
@@ -95,7 +99,7 @@ export default class OssSync {
           prefix: v,
         };
       }),
-      'prefix'
+      "prefix"
     );
 
     let needRemoveFiles = differenceBy(
@@ -110,7 +114,7 @@ export default class OssSync {
           fullPath: file,
         };
       }),
-      'prefix'
+      "prefix"
     );
 
     return [needUploadFiles, needRemoveFiles];
@@ -125,29 +129,34 @@ export default class OssSync {
       remoteFiles
     );
     if (needUploadFiles.length <= 0) {
-      showAlert('No files need to upload.');
+      showAlert("No files need to upload.");
       return;
     }
-    await showAlert(
+    const isPass = await showDialog(
       `${needUploadFiles.length} files need to be uploaded, ${needRemoveFiles.length} files need to be removed.`
     );
+    if (!isPass) {
+      return;
+    }
     const statusBarItem = createStatusBarItem();
     statusBarItem.show();
     let notUploadCount = needUploadFiles.length;
     let notRemoveCount = needRemoveFiles.length;
     for await (let fileItem of needUploadFiles) {
-      statusBarItem.text = `upload ${fileItem.fullPath}, ${notUploadCount - 1 >= 0
-        ? notUploadCount - 1 + ' files waiting to be uploaded.'
-        : ''
-        }`;
+      statusBarItem.text = `upload ${fileItem.fullPath}, ${
+        notUploadCount - 1 >= 0
+          ? notUploadCount - 1 + " files waiting to be uploaded."
+          : ""
+      }`;
       await this._client.uploadFile(fileItem.prefix, fileItem.fullPath);
       notUploadCount--;
     }
     for await (let fileItem of needRemoveFiles) {
-      statusBarItem.text = `remove ${fileItem.prefix}, ${notRemoveCount - 1 >= 0
-        ? notRemoveCount - 1 + ' files waiting to be removed.'
-        : ''
-        }`;
+      statusBarItem.text = `remove ${fileItem.prefix}, ${
+        notRemoveCount - 1 >= 0
+          ? notRemoveCount - 1 + " files waiting to be removed."
+          : ""
+      }`;
       await this._client.deleteFile(fileItem.prefix);
       notRemoveCount--;
     }

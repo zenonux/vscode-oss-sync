@@ -35,6 +35,11 @@ export function showAlert(msg: string) {
   return vscode.window.showInformationMessage(msg, { modal: true});
 }
 
+export async function showDialog(msg: string):Promise<boolean> {
+  const res=await vscode.window.showInformationMessage(msg, { modal: true},{title:'Cancel',isCloseAffordance:true},{title:'Confirm'});
+  return res?.title === 'Confirm';
+}
+
 export function showErrorMessage(msg: string) {
   return vscode.window.showErrorMessage(msg);
 }
