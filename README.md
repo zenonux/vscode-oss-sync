@@ -14,7 +14,7 @@ Sync files between Local and Oss. Support tencent cos.
 
 3. use the entry in the context menu to upload file or folder
 
-   right-click `ossSyncAssets`,run OssSync: Sync 
+   right-click `ossSyncAssets`,run OssSync: Sync
 
 ## Config
 
@@ -26,7 +26,8 @@ Sync files between Local and Oss. Support tencent cos.
   "accessKeyId": "", //required.
   "accessKeySecret": "", //required.
   "bucket": "", //required.
-  "domain": "", //required.
   "prefix": "" //required.
+  "domain": "", //required.
+  "cacheControl":"" //optional
 }
 ```

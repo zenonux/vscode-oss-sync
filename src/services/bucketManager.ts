@@ -7,13 +7,14 @@ type OssConfig = {
   accessKeyId: string;
   accessKeySecret: string;
   bucket: string;
-  domain:string
+  domain: string;
   region: string;
   prefix: string;
+  cacheControl: string;
 };
 
 interface BucketManager {
-  uploadFile(targetPrefix: string, filePath: string): Promise<any>;
+  uploadFile(targetPrefix: string, filePath: string,cacheControl:string): Promise<any>;
   checkFileExist(prefix: string): Promise<boolean>;
   listDirectory(prefix: string): Promise<string[]>;
 }
@@ -28,7 +29,11 @@ class TencentBucketManager implements BucketManager {
       SecretKey: _config.accessKeySecret,
     });
   }
-  async uploadFile(targetPrefix: string, filePath: string) {
+  async uploadFile(
+    targetPrefix: string,
+    filePath: string,
+    cacheControl: string
+  ) {
     if (!this._client) {
       return;
     }
@@ -41,6 +46,8 @@ class TencentBucketManager implements BucketManager {
       Key: targetPrefix,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Body: createReadStream(filePath),
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      CacheControl: cacheControl || "",
     });
     return res;
   }

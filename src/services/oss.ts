@@ -57,8 +57,9 @@ export default class OssSync {
         accessKeyId: "",
         accessKeySecret: "",
         bucket: "",
-        domain: "",
         prefix: "",
+        domain: "",
+        cacheControl: "",
       },
       { spaces: 4 }
     );
@@ -152,7 +153,11 @@ export default class OssSync {
           ? notUploadCount - 1 + " files waiting to be uploaded."
           : ""
       }`;
-      await this._client.uploadFile(fileItem.prefix, fileItem.fullPath);
+      await this._client.uploadFile(
+        fileItem.prefix,
+        fileItem.fullPath,
+        OssSync.getConfig().cacheControl
+      );
       notUploadCount--;
     }
     for await (let fileItem of needRemoveFiles) {
@@ -193,13 +198,18 @@ export default class OssSync {
     const statusBarItem = createStatusBarItem();
     statusBarItem.show();
     let notUploadCount = needUploadFiles.length;
+    let cacheControl = OssSync.getConfig().cacheControl;
     for await (let fileItem of needUploadFiles) {
       statusBarItem.text = `upload ${fileItem.fullPath}, ${
         notUploadCount - 1 >= 0
           ? notUploadCount - 1 + " files waiting to be uploaded."
           : ""
       }`;
-      await this._client.uploadFile(fileItem.prefix, fileItem.fullPath);
+      await this._client.uploadFile(
+        fileItem.prefix,
+        fileItem.fullPath,
+        cacheControl
+      );
       notUploadCount--;
     }
     statusBarItem.hide();
@@ -225,7 +235,11 @@ export default class OssSync {
       return;
     }
     try {
-      await this._client.uploadFile(targetPrefix, filePath);
+      await this._client.uploadFile(
+        targetPrefix,
+        filePath,
+        OssSync.getConfig().cacheControl
+      );
       this.copyLink(filePath);
     } catch (e) {
       showAlert(`upload ${filePath} failed.`);

@@ -58,6 +58,10 @@
       "type": "string",
       "description": "oss domain"
     },
+    "cacheControl":{
+      "type":"string",
+      "description": "oss Cache-Control"
+    },
     "prefix": {
       "type": "string",
       "description": "oss bucket prefix"
