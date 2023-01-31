@@ -9,6 +9,7 @@ import {
   showTextDocument,
   showAlert,
   showDialog,
+  copyToClipboard,
 } from "../utils/vscode";
 import { listDirectoryFiles, renameFile } from "../utils/util";
 import { differenceBy } from "lodash";
@@ -56,6 +57,7 @@ export default class OssSync {
         accessKeyId: "",
         accessKeySecret: "",
         bucket: "",
+        domain: "",
         prefix: "",
       },
       { spaces: 4 }
@@ -204,6 +206,15 @@ export default class OssSync {
     showAlert(
       `sync ${prefix} succeed,${needUploadFiles.length} files has been uploaded.`
     );
+  }
+
+  async copyLink(filePath: string) {
+    let prefix = OssSync.getTargetPrefixByFilePath(filePath);
+    let domain = OssSync.getConfig().domain;
+    domain = domain.charAt(domain.length - 1) !== "/" ? domain + "/" : domain;
+    let link = domain + prefix;
+    await copyToClipboard(link);
+    await showInformationMessage(`${link} copied to clipboard.`);
   }
 
   async uploadFile(filePath: string) {

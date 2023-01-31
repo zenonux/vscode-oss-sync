@@ -7,6 +7,7 @@ type OssConfig = {
   accessKeyId: string;
   accessKeySecret: string;
   bucket: string;
+  domain:string
   region: string;
   prefix: string;
 };

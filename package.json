@@ -23,6 +23,11 @@
     "menus": {
       "explorer/context": [
         {
+          "command": "vscode-oss-sync.copyLink",
+          "when": "!explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
+          "group": "1_modification"
+        },
+        {
           "command": "vscode-oss-sync.uploadFile",
           "when": "!explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
           "group": "1_modification"
@@ -45,6 +50,10 @@
       ],
       "commandPalette": [
         {
+          "command": "vscode-oss-sync.copyLink",
+          "when": "False"
+        },
+        {
           "command": "vscode-oss-sync.uploadFile",
           "when": "False"
         },
@@ -66,6 +75,10 @@
       {
         "command": "vscode-oss-sync.config",
         "title": "OssSync: Config"
+      },
+      {
+        "command": "vscode-oss-sync.copyLink",
+        "title": "OssSync: Copy Link"
       },
       {
         "command": "vscode-oss-sync.uploadFile",

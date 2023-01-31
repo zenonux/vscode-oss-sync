@@ -7,6 +7,7 @@
     "accessKeyId",
     "accessKeySecret",
     "bucket",
+    "domain",
     "prefix"
   ],
   "if": {
@@ -52,6 +53,10 @@
     "bucket": {
       "type": "string",
       "description": "oss bucket"
+    },
+    "domain": {
+      "type": "string",
+      "description": "oss domain"
     },
     "prefix": {
       "type": "string",

@@ -53,6 +53,10 @@ export async function showDialog(opts: {
 }
 
 
+export const copyToClipboard=(text:string)=>{
+  return vscode.env.clipboard.writeText(text);
+};
+
 export function showErrorMessage(msg: string) {
   return vscode.window.showErrorMessage(msg);
 }
