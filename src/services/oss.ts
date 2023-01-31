@@ -226,7 +226,7 @@ export default class OssSync {
     }
     try {
       await this._client.uploadFile(targetPrefix, filePath);
-      showInformationMessage(`upload ${filePath} succeed.`);
+      this.copyLink(filePath);
     } catch (e) {
       showAlert(`upload ${filePath} failed.`);
     }
