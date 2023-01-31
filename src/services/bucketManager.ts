@@ -1,20 +1,20 @@
-import * as TencentCos from 'cos-nodejs-sdk-v5';
-import { createReadStream } from 'fs-extra';
-type OssType = 'tencent';
+import * as TencentCos from "cos-nodejs-sdk-v5";
+import { createReadStream } from "fs-extra";
+type OssType = "tencent";
 
 type OssConfig = {
-  type: OssType
-  accessKeyId: string
-  accessKeySecret: string
-  bucket: string
-  region: string
-  prefix: string
+  type: OssType;
+  accessKeyId: string;
+  accessKeySecret: string;
+  bucket: string;
+  region: string;
+  prefix: string;
 };
 
 interface BucketManager {
-  uploadFile(targetPrefix: string, filePath: string): Promise<any>
-  checkFileExist(prefix: string): Promise<boolean>
-  listDirectory(prefix: string): Promise<string[]>
+  uploadFile(targetPrefix: string, filePath: string): Promise<any>;
+  checkFileExist(prefix: string): Promise<boolean>;
+  listDirectory(prefix: string): Promise<string[]>;
 }
 
 class TencentBucketManager implements BucketManager {
@@ -35,7 +35,7 @@ class TencentBucketManager implements BucketManager {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Bucket: this._config.bucket /* 填入您自己的存储桶，必须字段 */,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      Region: this._config.region || '',
+      Region: this._config.region || "",
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Key: targetPrefix,
       // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -54,7 +54,7 @@ class TencentBucketManager implements BucketManager {
           // eslint-disable-next-line @typescript-eslint/naming-convention
           Bucket: this._config.bucket /* 填入您自己的存储桶，必须字段 */,
           // eslint-disable-next-line @typescript-eslint/naming-convention
-          Region: this._config.region || '',
+          Region: this._config.region || "",
           // eslint-disable-next-line @typescript-eslint/naming-convention
           Key: prefix /* 存储在桶里的对象键（例如1.jpg，a/b/test.txt），必须字段 */,
         },
@@ -73,42 +73,43 @@ class TencentBucketManager implements BucketManager {
     if (!this._client) {
       return [];
     }
-    prefix =
-      prefix.charAt(prefix.length - 1) !== '/'
-        ? prefix + '/'
-        : prefix;
+    prefix = prefix.charAt(prefix.length - 1) !== "/" ? prefix + "/" : prefix;
     let res = await this._client.getBucket({
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Bucket: this._config.bucket /* 填入您自己的存储桶，必须字段 */,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      Region: this._config.region || '',
+      Region: this._config.region || "",
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Prefix: prefix,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      Delimiter: '/',
+      Delimiter: "/",
     });
-    return res.Contents.map((item) => item.Key);
+    return res.Contents.map((item) => item.Key).filter(
+      (v) => v.charAt(v.length - 1) !== "/"
+    );
   }
 
   deleteFile(prefix: string) {
     return new Promise((resolve) => {
-      this._client?.deleteObject({
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        Bucket: this._config.bucket /* 填入您自己的存储桶，必须字段 */,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        Region: this._config.region || '',
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        Key: prefix,
-      }, function (err) {
-        if (err) {
-          resolve(false);
-        } else {
-          resolve(true);
+      this._client?.deleteObject(
+        {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          Bucket: this._config.bucket /* 填入您自己的存储桶，必须字段 */,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          Region: this._config.region || "",
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          Key: prefix,
+        },
+        function (err) {
+          if (err) {
+            resolve(false);
+          } else {
+            resolve(true);
+          }
         }
-      });
+      );
     });
   }
-
 }
 
 export default class BucketManagerFactory {

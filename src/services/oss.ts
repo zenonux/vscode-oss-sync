@@ -1,4 +1,4 @@
-import { readJsonSync, rename, pathExists, outputJson } from "fs-extra";
+import { readJsonSync, copyFile, pathExists, outputJson } from "fs-extra";
 import * as path from "path";
 import BucketManagerFactory from "./bucketManager";
 import {
@@ -128,13 +128,15 @@ export default class OssSync {
       localFiles,
       remoteFiles
     );
-    if (needUploadFiles.length <= 0) {
-      showAlert("No files need to upload.");
+
+    if (needUploadFiles.length <= 0 && needRemoveFiles.length <= 0) {
+      showAlert("No files need to be uploaded or removed.");
       return;
     }
-    const isPass = await showDialog(
-      `${needUploadFiles.length} files need to be uploaded, ${needRemoveFiles.length} files need to be removed.`
-    );
+    const isPass = await showDialog({
+      type: "warning",
+      message: `${needUploadFiles.length} files need to be uploaded, ${needRemoveFiles.length} files need to be removed.`,
+    });
     if (!isPass) {
       return;
     }
@@ -157,12 +159,16 @@ export default class OssSync {
           ? notRemoveCount - 1 + " files waiting to be removed."
           : ""
       }`;
-      await this._client.deleteFile(fileItem.prefix);
-      notRemoveCount--;
+      let isRemoved = await this._client.deleteFile(fileItem.prefix);
+      if (isRemoved) {
+        notRemoveCount--;
+      }
     }
     statusBarItem.hide();
     showAlert(
-      `sync ${prefix} succeed,${needUploadFiles.length} files has been uploaded, ${needRemoveFiles.length} files has been removed.`
+      `${needUploadFiles.length} files has been uploaded, ${
+        needRemoveFiles.length - notRemoveCount
+      } files has been removed.`
     );
   }
 
@@ -170,17 +176,15 @@ export default class OssSync {
     let prefix = OssSync.getTargetPrefixByFilePath(folderPath);
     let localFiles = listDirectoryFiles(folderPath);
     let remoteFiles = await this._client.listDirectory(prefix);
-    let [needUploadFiles] = this._diffFiles(
-      localFiles,
-      remoteFiles
-    );
+    let [needUploadFiles] = this._diffFiles(localFiles, remoteFiles);
     if (needUploadFiles.length <= 0) {
       showAlert("No files need to upload.");
       return;
     }
-    const isPass = await showDialog(
-      `${needUploadFiles.length} files need to be uploaded.`
-    );
+    const isPass = await showDialog({
+      type: "info",
+      message: `${needUploadFiles.length} files need to be uploaded.`,
+    });
     if (!isPass) {
       return;
     }
@@ -217,9 +221,9 @@ export default class OssSync {
     }
   }
 
-  async renameAndUploadFile(filePath: string) {
+  async copyAndUploadFile(filePath: string) {
     let targetFilePath = renameFile(filePath);
-    await rename(filePath, targetFilePath);
+    await copyFile(filePath, targetFilePath);
     await this.uploadFile(targetFilePath);
   }
 }

@@ -23,12 +23,12 @@
     "menus": {
       "explorer/context": [
         {
-          "command": "vscode-oss-sync.renameAndUploadFile",
+          "command": "vscode-oss-sync.uploadFile",
           "when": "!explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
           "group": "1_modification"
         },
         {
-          "command": "vscode-oss-sync.uploadFile",
+          "command": "vscode-oss-sync.copyAndUploadFile",
           "when": "!explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
           "group": "1_modification"
         },
@@ -45,11 +45,11 @@
       ],
       "commandPalette": [
         {
-          "command": "vscode-oss-sync.renameAndUploadFile",
+          "command": "vscode-oss-sync.uploadFile",
           "when": "False"
         },
         {
-          "command": "vscode-oss-sync.uploadFile",
+          "command": "vscode-oss-sync.copyAndUploadFile",
           "when": "False"
         },
         {
@@ -68,12 +68,12 @@
         "title": "OssSync: Config"
       },
       {
-        "command": "vscode-oss-sync.renameAndUploadFile",
-        "title": "OssSync: Rename & Upload"
-      },
-      {
         "command": "vscode-oss-sync.uploadFile",
         "title": "OssSync: Upload"
+      },
+      {
+        "command": "vscode-oss-sync.copyAndUploadFile",
+        "title": "OssSync: Copy & Upload"
       },
       {
         "command": "vscode-oss-sync.uploadFolder",
@@ -81,7 +81,7 @@
       },
       {
         "command": "vscode-oss-sync.syncFolder",
-        "title": "OssSync: Sync"
+        "title": "OssSync: Sync [Warning !!!]"
       }
     ],
     "jsonValidation": [
