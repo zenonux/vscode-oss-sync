@@ -1,7 +1,7 @@
 {
   "name": "vscode-oss-sync",
   "displayName": "OssSync",
-  "publisher": "换个头像心好累",
+  "publisher": "zenonux",
   "description": "oss sync extension for vscode(tencent cos).",
   "version": "1.2.3",
   "engines": {
