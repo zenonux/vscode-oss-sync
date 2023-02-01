@@ -1,9 +1,9 @@
 {
   "name": "vscode-oss-sync",
   "displayName": "OssSync",
-  "publisher": "zenonux",
+  "publisher": "换个头像心好累",
   "description": "oss sync extension for vscode(tencent cos).",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "engines": {
     "vscode": "^1.70.0"
   },
@@ -16,6 +16,7 @@
     "theme": "dark"
   },
   "activationEvents": [
+    "onCommand:vscode-oss-sync.config",
     "workspaceContains:.vscode/oss-sync.json"
   ],
   "main": "./dist/extension.js",
@@ -49,9 +50,6 @@
         }
       ],
       "commandPalette": [
-        {
-          "command": "vscode-oss-sync.config"
-        },
         {
           "command": "vscode-oss-sync.copyLink",
           "when": "False"
