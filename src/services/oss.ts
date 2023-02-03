@@ -11,7 +11,7 @@ import {
   showDialog,
   copyToClipboard,
 } from "../utils/vscode";
-import { listDirectoryFiles, renameFile } from "../utils/util";
+import { listDirectoryFiles } from "../utils/util";
 import { differenceBy } from "lodash";
 
 const configPath = path.join(getRootPath(), ".vscode/oss-sync.json");
@@ -246,9 +246,4 @@ export default class OssSync {
     }
   }
 
-  async copyAndUploadFile(filePath: string) {
-    let targetFilePath = renameFile(filePath);
-    await copyFile(filePath, targetFilePath);
-    await this.uploadFile(targetFilePath);
-  }
 }
