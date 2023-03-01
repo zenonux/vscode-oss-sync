@@ -34,11 +34,6 @@
           "group": "1_modification"
         },
         {
-          "command": "vscode-oss-sync.copyAndUploadFile",
-          "when": "!explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
-          "group": "1_modification"
-        },
-        {
           "command": "vscode-oss-sync.uploadFolder",
           "when": "explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
           "group": "1_modification"
