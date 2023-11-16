@@ -8,13 +8,13 @@ Sync files between Local and Oss. Support tencent cos.
 
    `command/ctrl+shift+p` OssSync:config
 
-2. create `ossSyncAssets` directory in your project
+2. create `AssetsOssSync` directory in your project
 
-   move files into `ossSyncAssets`
+   move files into `AssetsOssSync`
 
 3. use the entry in the context menu to upload file or folder
 
-   right-click `ossSyncAssets`,run OssSync: Sync
+   right-click `AssetsOssSync`,run OssSync: Sync
 
 ## Config
 

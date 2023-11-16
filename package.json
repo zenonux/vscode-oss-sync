@@ -3,7 +3,7 @@
   "displayName": "OssSync",
   "publisher": "zenonux",
   "description": "oss sync extension for vscode(tencent cos).",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "engines": {
     "vscode": "^1.70.0"
   },
@@ -25,22 +25,22 @@
       "explorer/context": [
         {
           "command": "vscode-oss-sync.copyLink",
-          "when": "!explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
+          "when": "!explorerResourceIsFolder && resourcePath =~ /AssetsOssSync/",
           "group": "1_modification"
         },
         {
           "command": "vscode-oss-sync.uploadFile",
-          "when": "!explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
+          "when": "!explorerResourceIsFolder && resourcePath =~ /AssetsOssSync/",
           "group": "1_modification"
         },
         {
           "command": "vscode-oss-sync.uploadFolder",
-          "when": "explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
+          "when": "explorerResourceIsFolder && resourcePath =~ /AssetsOssSync/",
           "group": "1_modification"
         },
         {
           "command": "vscode-oss-sync.syncFolder",
-          "when": "explorerResourceIsFolder && resourcePath =~ /ossSyncAssets/",
+          "when": "explorerResourceIsFolder && resourcePath =~ /AssetsOssSync/",
           "group": "1_modification"
         }
       ],

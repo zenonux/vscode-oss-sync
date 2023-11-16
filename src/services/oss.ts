@@ -15,7 +15,7 @@ import { listDirectoryFiles } from "../utils/util";
 import { differenceBy } from "lodash";
 
 const configPath = path.join(getRootPath(), ".vscode/oss-sync.json");
-const ASSETS_CONTEXT = "ossSyncAssets";
+const ASSETS_CONTEXT = "AssetsOssSync";
 type RemoteFileItem = { prefix: string };
 type LocalFileItem = { prefix: string; fullPath: string };
 
