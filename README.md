@@ -1,4 +1,4 @@
-# Oss Sync
+# OSS Sync
 
 Sync files between Local and Oss. Support tencent cos.
 

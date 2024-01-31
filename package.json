@@ -1,11 +1,11 @@
 {
   "name": "vscode-oss-sync",
-  "displayName": "OssSync",
+  "displayName": "OSS Sync",
   "publisher": "zenonux",
   "description": "oss sync extension for vscode(tencent cos).",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "engines": {
-    "vscode": "^1.70.0"
+    "vscode": "^1.75.0"
   },
   "categories": [
     "Other"
@@ -16,7 +16,6 @@
     "theme": "dark"
   },
   "activationEvents": [
-    "onCommand:vscode-oss-sync.config",
     "workspaceContains:.vscode/oss-sync.json"
   ],
   "main": "./dist/extension.js",
@@ -37,11 +36,6 @@
           "command": "vscode-oss-sync.uploadFolder",
           "when": "explorerResourceIsFolder && resourcePath =~ /AssetsOssSync/",
           "group": "1_modification"
-        },
-        {
-          "command": "vscode-oss-sync.syncFolder",
-          "when": "explorerResourceIsFolder && resourcePath =~ /AssetsOssSync/",
-          "group": "1_modification"
         }
       ],
       "commandPalette": [
@@ -55,10 +49,6 @@
         },
         {
           "command": "vscode-oss-sync.uploadFolder",
-          "when": "False"
-        },
-        {
-          "command": "vscode-oss-sync.syncFolder",
           "when": "False"
         }
       ]
@@ -79,10 +69,6 @@
       {
         "command": "vscode-oss-sync.uploadFolder",
         "title": "OssSync: Upload Folder"
-      },
-      {
-        "command": "vscode-oss-sync.syncFolder",
-        "title": "OssSync: Sync [Warning !!!]"
       }
     ],
     "jsonValidation": [

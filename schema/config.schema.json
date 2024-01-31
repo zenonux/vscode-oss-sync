@@ -1,5 +1,5 @@
 {
-  "title": "JSON schema for Oss Sync",
+  "title": "JSON schema for OSS Sync",
   "type": "object",
   "required": [
     "label",

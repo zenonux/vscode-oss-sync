@@ -123,61 +123,6 @@ export default class OssSync {
     return [needUploadFiles, needRemoveFiles];
   }
 
-  async syncFolder(folderPath: string) {
-    let prefix = OssSync.getTargetPrefixByFilePath(folderPath);
-    let localFiles = listDirectoryFiles(folderPath);
-    let remoteFiles = await this._client.listDirectory(prefix);
-    let [needUploadFiles, needRemoveFiles] = this._diffFiles(
-      localFiles,
-      remoteFiles
-    );
-
-    if (needUploadFiles.length <= 0 && needRemoveFiles.length <= 0) {
-      showAlert("No files need to be uploaded or removed.");
-      return;
-    }
-    const isPass = await showDialog({
-      type: "warning",
-      message: `${needUploadFiles.length} files need to be uploaded, ${needRemoveFiles.length} files need to be removed.`,
-    });
-    if (!isPass) {
-      return;
-    }
-    const statusBarItem = createStatusBarItem();
-    statusBarItem.show();
-    let notUploadCount = needUploadFiles.length;
-    let notRemoveCount = needRemoveFiles.length;
-    for await (let fileItem of needUploadFiles) {
-      statusBarItem.text = `upload ${fileItem.fullPath}, ${
-        notUploadCount - 1 >= 0
-          ? notUploadCount - 1 + " files waiting to be uploaded."
-          : ""
-      }`;
-      await this._client.uploadFile(
-        fileItem.prefix,
-        fileItem.fullPath,
-        OssSync.getConfig().cacheControl
-      );
-      notUploadCount--;
-    }
-    for await (let fileItem of needRemoveFiles) {
-      statusBarItem.text = `remove ${fileItem.prefix}, ${
-        notRemoveCount - 1 >= 0
-          ? notRemoveCount - 1 + " files waiting to be removed."
-          : ""
-      }`;
-      let isRemoved = await this._client.deleteFile(fileItem.prefix);
-      if (isRemoved) {
-        notRemoveCount--;
-      }
-    }
-    statusBarItem.hide();
-    showAlert(
-      `${needUploadFiles.length} files has been uploaded, ${
-        needRemoveFiles.length - notRemoveCount
-      } files has been removed.`
-    );
-  }
 
   async uploadFolder(folderPath: string) {
     let prefix = OssSync.getTargetPrefixByFilePath(folderPath);
