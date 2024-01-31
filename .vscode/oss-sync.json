@@ -1,0 +1,11 @@
+{
+    "label": "oss label",
+    "type": "tencent",
+    "region": "assets-sh-1234",
+    "accessKeyId": "",
+    "accessKeySecret": "",
+    "bucket": "",
+    "prefix": "",
+    "domain": "",
+    "cacheControl": ""
+}

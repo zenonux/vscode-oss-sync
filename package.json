@@ -33,6 +33,11 @@
           "group": "1_modification"
         },
         {
+          "command": "vscode-oss-sync.uploadRenameFile",
+          "when": "!explorerResourceIsFolder && resourcePath =~ /AssetsOssSync/",
+          "group": "1_modification"
+        },
+        {
           "command": "vscode-oss-sync.uploadFolder",
           "when": "explorerResourceIsFolder && resourcePath =~ /AssetsOssSync/",
           "group": "1_modification"
@@ -45,6 +50,10 @@
         },
         {
           "command": "vscode-oss-sync.uploadFile",
+          "when": "False"
+        },
+        {
+          "command": "vscode-oss-sync.uploadRenameFile",
           "when": "False"
         },
         {
@@ -65,6 +74,10 @@
       {
         "command": "vscode-oss-sync.uploadFile",
         "title": "OssSync: Upload"
+      },
+      {
+        "command": "vscode-oss-sync.uploadRenameFile",
+        "title": "OssSync: Rename & Upload"
       },
       {
         "command": "vscode-oss-sync.uploadFolder",

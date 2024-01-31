@@ -4,6 +4,7 @@ import * as vscode from "vscode";
 import {
   initConfigCommand,
   uploadFileCommand,
+  uploadRenameFileCommand,
   uploadFolderCommand,
   copyLinkCommand,
 } from "./commands/oss";
@@ -14,6 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
   const commands = [
     registerCommand("vscode-oss-sync.config", initConfigCommand),
     registerCommand("vscode-oss-sync.uploadFile", uploadFileCommand),
+    registerCommand("vscode-oss-sync.uploadRenameFile", uploadRenameFileCommand),
     registerCommand("vscode-oss-sync.uploadFolder", uploadFolderCommand),
     registerCommand("vscode-oss-sync.copyLink", copyLinkCommand),
   ];
